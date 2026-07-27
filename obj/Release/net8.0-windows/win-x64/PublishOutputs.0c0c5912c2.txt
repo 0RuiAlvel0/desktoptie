@@ -1,0 +1,4 @@
+C:\Users\prime\AppData\Local\Temp\DesktopTie-selfcontained-test\appsettings.Development.json
+C:\Users\prime\AppData\Local\Temp\DesktopTie-selfcontained-test\appsettings.json
+C:\Users\prime\AppData\Local\Temp\DesktopTie-selfcontained-test\DesktopTie.pdb
+C:\Users\prime\AppData\Local\Temp\DesktopTie-selfcontained-test\DesktopTie.exe

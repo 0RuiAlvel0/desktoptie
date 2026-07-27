@@ -1,0 +1,116 @@
+{
+  "version": 3,
+  "targets": {
+    "native,Version=v0.0": {
+      "WixToolset.UI.wixext/4.0.4": {
+        "type": "package",
+        "build": {
+          "build/WixToolset.UI.wixext.targets": {}
+        }
+      },
+      "WixToolset.Util.wixext/4.0.4": {
+        "type": "package",
+        "build": {
+          "build/WixToolset.Util.wixext.targets": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "WixToolset.UI.wixext/4.0.4": {
+      "sha512": "X3DhDPkf2heL7rfl6twwLb3UrlXjT2YlSUr6BSuieEGJoiJnFuUZOCdpdnn4cRODQeUcWYdQn98nWBwpiR0R9g==",
+      "type": "package",
+      "path": "wixtoolset.ui.wixext/4.0.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "build/WixToolset.UI.wixext.targets",
+        "wix.png",
+        "wixext4/WixToolset.UI.wixext.dll",
+        "wixtoolset.ui.wixext.4.0.4.nupkg.sha512",
+        "wixtoolset.ui.wixext.nuspec"
+      ]
+    },
+    "WixToolset.Util.wixext/4.0.4": {
+      "sha512": "62eaWZtzwWhL0WunRQAUv2dfRm2XRxxy1Ofna53MFdF7vx1WOCm8L2lqWY+n2QNHQQVKrWEGzt2+dfDiSZ23Tg==",
+      "type": "package",
+      "path": "wixtoolset.util.wixext/4.0.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "build/WixToolset.Util.wixext.targets",
+        "wix.png",
+        "wixext4/WixToolset.Util.wixext.dll",
+        "wixtoolset.util.wixext.4.0.4.nupkg.sha512",
+        "wixtoolset.util.wixext.nuspec"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    "native,Version=v0.0": [
+      "WixToolset.UI.wixext >= 4.0.4",
+      "WixToolset.Util.wixext >= 4.0.4"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\prime\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "0.0.1",
+    "restore": {
+      "projectUniqueName": "C:\\projects\\DesktopTie\\Installer\\DesktopTie.Installer.wixproj",
+      "projectName": "DesktopTie",
+      "projectPath": "C:\\projects\\DesktopTie\\Installer\\DesktopTie.Installer.wixproj",
+      "packagesPath": "C:\\Users\\prime\\.nuget\\packages\\",
+      "outputPath": "C:\\projects\\DesktopTie\\Installer\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\prime\\AppData\\Roaming\\NuGet\\NuGet.Config"
+      ],
+      "originalTargetFrameworks": [
+        "net8.0-windows"
+      ],
+      "sources": {
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "native": {
+          "targetAlias": "net8.0-windows",
+          "projectReferences": {}
+        }
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      }
+    },
+    "frameworks": {
+      "native": {
+        "targetAlias": "net8.0-windows",
+        "dependencies": {
+          "WixToolset.UI.wixext": {
+            "target": "Package",
+            "version": "[4.0.4, )"
+          },
+          "WixToolset.Util.wixext": {
+            "target": "Package",
+            "version": "[4.0.4, )"
+          }
+        }
+      }
+    }
+  },
+  "logs": [
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'WixToolset.Util.wixext' 4.0.4 has a known high severity vulnerability, https://github.com/advisories/GHSA-jx4p-m4wm-vvjg",
+      "libraryId": "WixToolset.Util.wixext",
+      "targetGraphs": [
+        "native,Version=v0.0"
+      ]
+    }
+  ]
+}

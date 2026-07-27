@@ -1,0 +1,90 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
+     xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
+  <Package
+    Name="DesktopTie"
+    Manufacturer="DesktopTie"
+    Version="$(var.Version)"
+    UpgradeCode="{A0B2C4F0-6C44-4D63-9D88-9B4D2C1121D3}">
+    <MajorUpgrade DowngradeErrorMessage="A newer version of DesktopTie is already installed." />
+    <MediaTemplate EmbedCab="yes" />
+
+    <Property Id="WIXUI_EXITDIALOGOPTIONALTEXT" Value="You can change startup behavior from DesktopTie once it starts." />
+    <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Start DesktopTie now" />
+    <ui:WixUI Id="WixUI_InstallDir" InstallDirectory="INSTALLFOLDER" />
+
+    <Feature Id="MainFeature" Title="DesktopTie" Level="1">
+      <ComponentGroupRef Id="DesktopTieComponents" />
+      <ComponentGroupRef Id="DesktopTieAssetsComponents" />
+      <ComponentGroupRef Id="DesktopTieShortcutsComponents" />
+    </Feature>
+  </Package>
+
+  <Fragment>
+    <StandardDirectory Id="ProgramFiles64Folder">
+      <Directory Id="INSTALLFOLDER" Name="DesktopTie">
+        <Directory Id="ASSETSFOLDER" Name="Assets" />
+      </Directory>
+    </StandardDirectory>
+
+    <StandardDirectory Id="ProgramMenuFolder">
+      <Directory Id="DesktopTieProgramMenuDir" Name="DesktopTie" />
+    </StandardDirectory>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="DesktopTieComponents" Directory="INSTALLFOLDER">
+      <Component Id="DesktopTieExeComponent" Guid="{0B4C3D1E-7B3A-4F67-B8D1-8B5566214A70}">
+        <File Id="DesktopTieExe" Source="$(var.DesktopTiePublishDir)DesktopTie.exe" />
+        <File Source="$(var.DesktopTiePublishDir)DesktopTie.pdb" />
+        <File Source="$(var.DesktopTiePublishDir)appsettings.json" />
+        <File Source="$(var.DesktopTiePublishDir)appsettings.Development.json" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="DesktopTieAssetsComponents" Directory="ASSETSFOLDER">
+      <Component Id="DesktopTieAssetsComponent" Guid="{7D88C8A8-99C9-469A-AE67-0CA739CB97B2}">
+        <File Source="..\Assets\NodeTieLogo.ico" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="DesktopTieShortcutsComponents" Directory="DesktopTieProgramMenuDir">
+      <Component Id="DesktopTieStartMenuShortcutComponent" Guid="{D4678D0B-E9F0-4F29-9307-0AA75D8D83B9}">
+        <Shortcut
+          Id="DesktopTieStartMenuShortcut"
+          Name="DesktopTie"
+          Description="Launch DesktopTie"
+          Target="[INSTALLFOLDER]DesktopTie.exe"
+          WorkingDirectory="INSTALLFOLDER" />
+        <RemoveFolder Id="RemoveDesktopTieProgramMenuDir" On="uninstall" />
+        <RegistryValue Root="HKCU" Key="Software\DesktopTie" Name="Installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <SetProperty
+      Id="WixUnelevatedShellExecTarget"
+      Value="[INSTALLFOLDER]DesktopTie.exe"
+      Before="LaunchDesktopTieAfterInstall"
+      Sequence="ui" />
+
+    <CustomAction
+      Id="LaunchDesktopTieAfterInstall"
+      BinaryRef="Wix4UtilCA_$(sys.BUILDARCHSHORT)"
+      DllEntry="WixUnelevatedShellExec"
+      Execute="immediate"
+      Return="ignore" />
+
+  </Fragment>
+
+  <Fragment>
+    <UI>
+      <DialogRef Id="ExitDialog" />
+      <Publish Dialog="ExitDialog" Control="Finish" Event="DoAction" Value="LaunchDesktopTieAfterInstall" Order="1" Condition="WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 AND NOT Installed" />
+    </UI>
+  </Fragment>
+</Wix>

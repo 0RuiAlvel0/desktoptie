@@ -1,0 +1,28 @@
+<Project Sdk="WixToolset.Sdk/4.0.4">
+  <PropertyGroup>
+    <OutputType>Package</OutputType>
+    <OutputName>DesktopTie</OutputName>
+    <Platform>x64</Platform>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <DesktopTiePublishDir>$(MSBuildProjectDirectory)\..\artifacts\publish\</DesktopTiePublishDir>
+    <DefineConstants>Version=$(Version);DesktopTiePublishDir=$(DesktopTiePublishDir)</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DesktopTie.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="WixToolset.UI.wixext" Version="4.0.4" />
+    <PackageReference Include="WixToolset.Util.wixext" Version="4.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <BindVariable Include="WixUILicenseRtf=License.rtf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="License.rtf" />
+    <Content Include="Product.wxs" />
+  </ItemGroup>
+</Project>

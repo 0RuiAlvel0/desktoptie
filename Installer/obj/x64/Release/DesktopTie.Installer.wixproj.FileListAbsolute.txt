@@ -1,0 +1,6 @@
+C:\projects\DesktopTie\Installer\obj\x64\Release\DesktopTie.Installer.wixproj.CoreCompileInputs.cache
+C:\projects\DesktopTie\Installer\bin\x64\Release\DesktopTie.msi
+C:\projects\DesktopTie\Installer\bin\x64\Release\DesktopTie.wixpdb
+C:\projects\DesktopTie\Installer\obj\x64\Release\DesktopTie.msi
+C:\projects\DesktopTie\Installer\obj\x64\Release\DesktopTie.wixpdb
+C:\projects\DesktopTie\Installer\obj\x64\Release\DesktopTie.Installer.wixproj.BindTracking-neutral.txt
