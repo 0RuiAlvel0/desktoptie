@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DesktopTie")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("0.0.1.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("0.0.1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("0.0.1+60e3bb441be5c47df62f689458eaa95d2c90d2c5")]
 [assembly: System.Reflection.AssemblyProductAttribute("DesktopTie")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DesktopTie")]
 [assembly: System.Reflection.AssemblyVersionAttribute("0.0.1.0")]
