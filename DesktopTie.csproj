@@ -20,7 +20,7 @@
     <Content Remove="artifacts\**\*" />
     <None Remove="Installer\**\*" />
     <Content Remove="Installer\**\*" />
-    <Content Include="Assets\NodeTieLogo.ico">
+    <Content Include="Assets\DesktopTieLogo.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>

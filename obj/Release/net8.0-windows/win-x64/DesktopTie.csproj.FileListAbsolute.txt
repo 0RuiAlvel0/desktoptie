@@ -1,6 +1,5 @@
 C:\projects\DesktopTie\bin\Release\net8.0-windows\win-x64\appsettings.Development.json
 C:\projects\DesktopTie\bin\Release\net8.0-windows\win-x64\appsettings.json
-C:\projects\DesktopTie\bin\Release\net8.0-windows\win-x64\Assets\NodeTieLogo.ico
 C:\projects\DesktopTie\bin\Release\net8.0-windows\win-x64\DesktopTie.exe
 C:\projects\DesktopTie\bin\Release\net8.0-windows\win-x64\DesktopTie.deps.json
 C:\projects\DesktopTie\bin\Release\net8.0-windows\win-x64\DesktopTie.runtimeconfig.json
@@ -504,3 +503,5 @@ C:\projects\DesktopTie\obj\Release\net8.0-windows\win-x64\refint\DesktopTie.dll
 C:\projects\DesktopTie\obj\Release\net8.0-windows\win-x64\DesktopTie.pdb
 C:\projects\DesktopTie\obj\Release\net8.0-windows\win-x64\DesktopTie.genruntimeconfig.cache
 C:\projects\DesktopTie\obj\Release\net8.0-windows\win-x64\ref\DesktopTie.dll
+C:\projects\DesktopTie\bin\Release\net8.0-windows\win-x64\Assets\DesktopTieLogo.ico
+C:\projects\DesktopTie\obj\Release\net8.0-windows\win-x64\DesktopTie.sourcelink.json

@@ -1650,7 +1650,7 @@
     "C:\\Users\\prime\\.nuget\\packages\\": {}
   },
   "project": {
-    "version": "0.0.1",
+    "version": "0.1.0",
     "restore": {
       "projectUniqueName": "C:\\projects\\DesktopTie\\DesktopTie.csproj",
       "projectName": "DesktopTie",

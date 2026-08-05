@@ -257,7 +257,7 @@ public sealed class TrayApplicationContext : ApplicationContext
 
     private static Icon ResolveTrayIcon()
     {
-        var iconPath = Path.Combine(AppContext.BaseDirectory, "Assets", "NodeTieLogo.ico");
+        var iconPath = Path.Combine(AppContext.BaseDirectory, "Assets", "DesktopTieLogo.ico");
         if (File.Exists(iconPath))
         {
             return new Icon(iconPath);

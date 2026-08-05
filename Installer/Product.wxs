@@ -45,7 +45,7 @@
   <Fragment>
     <ComponentGroup Id="DesktopTieAssetsComponents" Directory="ASSETSFOLDER">
       <Component Id="DesktopTieAssetsComponent" Guid="{7D88C8A8-99C9-469A-AE67-0CA739CB97B2}">
-        <File Source="..\Assets\NodeTieLogo.ico" />
+        <File Source="..\Assets\DesktopTieLogo.ico" />
       </Component>
     </ComponentGroup>
   </Fragment>

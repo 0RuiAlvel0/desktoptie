@@ -1,6 +1,6 @@
 BuiltPdbOutput	C:\projects\DesktopTie\Installer\obj\x64\Release\DesktopTie.wixpdb
 BuiltTargetOutput	C:\projects\DesktopTie\Installer\obj\x64\Release\DesktopTie.msi
-Input	..\Assets\NodeTieLogo.ico
+Input	..\Assets\DesktopTieLogo.ico
 Input	C:\projects\DesktopTie\Installer\..\artifacts\publish\appsettings.Development.json
 Input	C:\projects\DesktopTie\Installer\..\artifacts\publish\appsettings.json
 Input	C:\projects\DesktopTie\Installer\..\artifacts\publish\DesktopTie.exe

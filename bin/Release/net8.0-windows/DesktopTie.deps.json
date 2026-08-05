@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v8.0": {
-      "DesktopTie/0.0.1": {
+      "DesktopTie/0.1.0": {
         "dependencies": {
           "Microsoft.Extensions.Hosting": "8.0.1",
           "System.Management": "8.0.0"
@@ -413,7 +413,7 @@
     }
   },
   "libraries": {
-    "DesktopTie/0.0.1": {
+    "DesktopTie/0.1.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

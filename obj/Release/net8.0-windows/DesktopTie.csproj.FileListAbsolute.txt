@@ -47,4 +47,5 @@ C:\projects\DesktopTie\obj\Release\net8.0-windows\refint\DesktopTie.dll
 C:\projects\DesktopTie\obj\Release\net8.0-windows\DesktopTie.pdb
 C:\projects\DesktopTie\obj\Release\net8.0-windows\DesktopTie.genruntimeconfig.cache
 C:\projects\DesktopTie\obj\Release\net8.0-windows\ref\DesktopTie.dll
-C:\projects\DesktopTie\bin\Release\net8.0-windows\Assets\NodeTieLogo.ico
+C:\projects\DesktopTie\bin\Release\net8.0-windows\Assets\DesktopTieLogo.ico
+C:\projects\DesktopTie\obj\Release\net8.0-windows\DesktopTie.sourcelink.json
