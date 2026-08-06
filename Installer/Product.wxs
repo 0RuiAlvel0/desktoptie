@@ -1,5 +1,6 @@
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
-     xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
+  xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui"
+  xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util">
   <Package
     Name="DesktopTie"
     Manufacturer="DesktopTie"
@@ -7,6 +8,31 @@
     UpgradeCode="{A0B2C4F0-6C44-4D63-9D88-9B4D2C1121D3}">
     <MajorUpgrade DowngradeErrorMessage="A newer version of DesktopTie is already installed." />
     <MediaTemplate EmbedCab="yes" />
+    <Property Id="MSIRMSHUTDOWN" Value="2" />
+    <SetProperty
+      Id="WixQuietExecCmdLine"
+      Value="&quot;[%ComSpec]&quot; /c taskkill /IM DesktopTie.exe /T /F"
+      Before="KillDesktopTiePrecheck"
+      Sequence="execute" />
+
+    <CustomAction
+      Id="KillDesktopTiePrecheck"
+      BinaryRef="Wix4UtilCA_$(sys.BUILDARCHSHORT)"
+      DllEntry="WixQuietExec"
+      Execute="immediate"
+      Return="ignore" />
+
+    <util:CloseApplication
+      Id="CloseDesktopTie"
+      Target="DesktopTie.exe"
+      Description="DesktopTie"
+      CloseMessage="yes"
+      ElevatedCloseMessage="yes"
+      EndSessionMessage="yes"
+      ElevatedEndSessionMessage="yes"
+      Timeout="10"
+      RebootPrompt="no"
+      TerminateProcess="1" />
 
     <Property Id="WIXUI_EXITDIALOGOPTIONALTEXT" Value="You can change startup behavior from DesktopTie once it starts." />
     <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Start DesktopTie now" />
@@ -18,6 +44,14 @@
       <ComponentGroupRef Id="DesktopTieShortcutsComponents" />
     </Feature>
   </Package>
+
+  <Fragment>
+    <InstallExecuteSequence>
+      <Custom Action="KillDesktopTiePrecheck" Before="InstallValidate" />
+      <Custom Action="SetWixUnelevatedShellExecTarget" After="InstallFinalize" Condition="WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1" />
+      <Custom Action="LaunchDesktopTieAfterInstall" After="SetWixUnelevatedShellExecTarget" Condition="WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1" />
+    </InstallExecuteSequence>
+  </Fragment>
 
   <Fragment>
     <StandardDirectory Id="ProgramFiles64Folder">
@@ -70,7 +104,7 @@
       Id="WixUnelevatedShellExecTarget"
       Value="[INSTALLFOLDER]DesktopTie.exe"
       Before="LaunchDesktopTieAfterInstall"
-      Sequence="ui" />
+      Sequence="execute" />
 
     <CustomAction
       Id="LaunchDesktopTieAfterInstall"
@@ -79,12 +113,5 @@
       Execute="immediate"
       Return="ignore" />
 
-  </Fragment>
-
-  <Fragment>
-    <UI>
-      <DialogRef Id="ExitDialog" />
-      <Publish Dialog="ExitDialog" Control="Finish" Event="DoAction" Value="LaunchDesktopTieAfterInstall" Order="1" Condition="WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 AND NOT Installed" />
-    </UI>
   </Fragment>
 </Wix>

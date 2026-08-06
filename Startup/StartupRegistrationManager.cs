@@ -9,12 +9,15 @@ namespace DesktopTie.Startup;
 public sealed class StartupRegistrationManager : IStartupRegistrationManager
 {
     private const string RunKeyPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
+    private const string StartupApprovedRunKeyPath = @"Software\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run";
     private const string RunValueName = "DesktopTie";
 
     public StartupRegistrationResult GetStatus()
     {
         var entryPath = GetRunKeyEntryPath();
-        var enabled = TryReadRunValue(out _);
+        var hasRunEntry = TryReadRunValue(out _);
+        var startupApprovedState = GetStartupApprovedState();
+        var enabled = hasRunEntry && startupApprovedState != StartupApprovedState.Disabled;
         return new StartupRegistrationResult
         {
             Action = StartupRegistrationAction.Status,
@@ -32,6 +35,7 @@ public sealed class StartupRegistrationManager : IStartupRegistrationManager
         using var key = Registry.CurrentUser.CreateSubKey(RunKeyPath, writable: true)
             ?? throw new InvalidOperationException("Could not open the current user's Run registry key.");
         key.SetValue(RunValueName, launcherCommand, RegistryValueKind.String);
+        ClearStartupApprovedValue();
 
         return new StartupRegistrationResult
         {
@@ -45,20 +49,15 @@ public sealed class StartupRegistrationManager : IStartupRegistrationManager
     public StartupRegistrationResult Disable()
     {
         var entryPath = GetRunKeyEntryPath();
-        var existed = TryReadRunValue(out _);
-        using (var key = Registry.CurrentUser.CreateSubKey(RunKeyPath, writable: true))
-        {
-            key?.DeleteValue(RunValueName, throwOnMissingValue: false);
-        }
+        EnsureRunEntryExists();
+        SetStartupApprovedDisabled();
 
         return new StartupRegistrationResult
         {
             Action = StartupRegistrationAction.Disable,
             Enabled = false,
             EntryPath = entryPath,
-            Message = existed
-                ? $"DesktopTie startup registration disabled. Removed Run value: {entryPath}"
-                : $"DesktopTie startup registration already disabled. No Run value found at: {entryPath}"
+            Message = $"DesktopTie startup registration disabled. Startup entry remains at: {entryPath}"
         };
     }
 
@@ -112,6 +111,66 @@ public sealed class StartupRegistrationManager : IStartupRegistrationManager
         using var key = Registry.CurrentUser.OpenSubKey(RunKeyPath, writable: false);
         value = key?.GetValue(RunValueName);
         return value is string stringValue && !string.IsNullOrWhiteSpace(stringValue);
+    }
+
+    private static void EnsureRunEntryExists()
+    {
+        if (TryReadRunValue(out _))
+        {
+            return;
+        }
+
+        var launcherCommand = BuildLauncherCommand();
+        using var key = Registry.CurrentUser.CreateSubKey(RunKeyPath, writable: true)
+            ?? throw new InvalidOperationException("Could not open the current user's Run registry key.");
+        key.SetValue(RunValueName, launcherCommand, RegistryValueKind.String);
+    }
+
+    private static StartupApprovedState GetStartupApprovedState()
+    {
+        using var key = Registry.CurrentUser.OpenSubKey(StartupApprovedRunKeyPath, writable: false);
+        if (key?.GetValue(RunValueName) is not byte[] rawValue || rawValue.Length == 0)
+        {
+            return StartupApprovedState.NotConfigured;
+        }
+
+        return rawValue[0] switch
+        {
+            3 => StartupApprovedState.Disabled,
+            _ => StartupApprovedState.Enabled
+        };
+    }
+
+    private static void SetStartupApprovedDisabled()
+    {
+        using var key = Registry.CurrentUser.CreateSubKey(StartupApprovedRunKeyPath, writable: true)
+            ?? throw new InvalidOperationException("Could not open the current user's StartupApproved Run registry key.");
+        key.SetValue(RunValueName, BuildStartupApprovedDisabledValue(), RegistryValueKind.Binary);
+    }
+
+    private static void ClearStartupApprovedValue()
+    {
+        using var key = Registry.CurrentUser.CreateSubKey(StartupApprovedRunKeyPath, writable: true);
+        key?.DeleteValue(RunValueName, throwOnMissingValue: false);
+    }
+
+    private static byte[] BuildStartupApprovedDisabledValue()
+    {
+        // Windows expects a binary payload where byte 0 is the state (3 == disabled).
+        // Storing an accompanying FILETIME timestamp keeps parity with Explorer-written values.
+        var payload = new byte[12];
+        payload[0] = 3;
+        var timestamp = DateTime.UtcNow.ToFileTimeUtc();
+        var timeBytes = BitConverter.GetBytes(timestamp);
+        Buffer.BlockCopy(timeBytes, 0, payload, 4, timeBytes.Length);
+        return payload;
+    }
+
+    private enum StartupApprovedState
+    {
+        NotConfigured = 0,
+        Enabled = 1,
+        Disabled = 2
     }
 
     private static string Quote(string value) => $"\"{value}\"";

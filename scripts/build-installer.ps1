@@ -1,7 +1,3 @@
-param(
-    [string]$Version
-)
-
 $ErrorActionPreference = "Stop"
 
 $repoRoot = Split-Path -Path $PSScriptRoot -Parent
@@ -32,10 +28,7 @@ function Get-BuildVersion {
     return $resolvedVersion.Trim()
 }
 
-if ([string]::IsNullOrWhiteSpace($Version))
-{
-    $Version = Get-BuildVersion -PropsPath $versionPropsPath
-}
+$Version = Get-BuildVersion -PropsPath $versionPropsPath
 
 if ($Version -notmatch '^\d+\.\d+\.\d+$')
 {
@@ -53,25 +46,15 @@ if (Test-Path $publishDir)
 New-Item -ItemType Directory -Path $publishDir -Force | Out-Null
 New-Item -ItemType Directory -Path $installerDir -Force | Out-Null
 
-if (Test-Path $msiSourcePath)
-{
-    Remove-Item -Path $msiSourcePath -Force
-}
-
-if (Test-Path $msiTargetPath)
-{
-    Remove-Item -Path $msiTargetPath -Force
-}
-
 Write-Host "Publishing DesktopTie version $Version..."
-dotnet publish $appProject -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:Version=$Version -o $publishDir
+dotnet publish $appProject -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o $publishDir
 if ($LASTEXITCODE -ne 0)
 {
     throw "dotnet publish failed with exit code $LASTEXITCODE"
 }
 
 Write-Host "Building MSI installer version $Version..."
-dotnet build $installerProject -c Release -p:Version=$Version
+dotnet build $installerProject -c Release
 if ($LASTEXITCODE -ne 0)
 {
     throw "dotnet build (installer) failed with exit code $LASTEXITCODE"
@@ -82,5 +65,16 @@ if (-not (Test-Path $msiSourcePath))
     throw "Expected MSI was not found at: $msiSourcePath"
 }
 
-Copy-Item -Path $msiSourcePath -Destination $msiTargetPath -Force
-Write-Host "Installer created: $msiTargetPath"
+try
+{
+    Copy-Item -Path $msiSourcePath -Destination $msiTargetPath -Force
+    Write-Host "Installer created: $msiTargetPath"
+}
+catch
+{
+    $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
+    $fallbackTargetPath = Join-Path $installerDir ("DesktopTie-{0}-{1}.msi" -f $Version, $timestamp)
+    Copy-Item -Path $msiSourcePath -Destination $fallbackTargetPath -Force
+    Write-Warning "Primary installer artifact path was locked: $msiTargetPath"
+    Write-Host "Installer created at fallback path: $fallbackTargetPath"
+}
