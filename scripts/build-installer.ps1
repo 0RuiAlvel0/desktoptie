@@ -1,3 +1,7 @@
+param(
+    [string]$Version
+)
+
 $ErrorActionPreference = "Stop"
 
 $repoRoot = Split-Path -Path $PSScriptRoot -Parent
@@ -28,7 +32,14 @@ function Get-BuildVersion {
     return $resolvedVersion.Trim()
 }
 
-$Version = Get-BuildVersion -PropsPath $versionPropsPath
+if ([string]::IsNullOrWhiteSpace($Version))
+{
+    $Version = Get-BuildVersion -PropsPath $versionPropsPath
+}
+else
+{
+    $Version = $Version.Trim()
+}
 
 if ($Version -notmatch '^\d+\.\d+\.\d+$')
 {
@@ -47,14 +58,14 @@ New-Item -ItemType Directory -Path $publishDir -Force | Out-Null
 New-Item -ItemType Directory -Path $installerDir -Force | Out-Null
 
 Write-Host "Publishing DesktopTie version $Version..."
-dotnet publish $appProject -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o $publishDir
+dotnet publish $appProject -c Release -r win-x64 --self-contained true -p:Version=$Version -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o $publishDir
 if ($LASTEXITCODE -ne 0)
 {
     throw "dotnet publish failed with exit code $LASTEXITCODE"
 }
 
 Write-Host "Building MSI installer version $Version..."
-dotnet build $installerProject -c Release
+dotnet build $installerProject -c Release -p:Version=$Version
 if ($LASTEXITCODE -ne 0)
 {
     throw "dotnet build (installer) failed with exit code $LASTEXITCODE"

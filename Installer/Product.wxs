@@ -36,7 +36,25 @@
 
     <Property Id="WIXUI_EXITDIALOGOPTIONALTEXT" Value="You can change startup behavior from DesktopTie once it starts." />
     <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Start DesktopTie now" />
+    <Property Id="WixUnelevatedShellExecTarget" Value="[#DesktopTieExe]" />
     <ui:WixUI Id="WixUI_InstallDir" InstallDirectory="INSTALLFOLDER" />
+
+    <UI>
+      <Publish
+        Dialog="ExitDialog"
+        Control="Finish"
+        Event="DoAction"
+        Value="LaunchDesktopTieAfterInstall"
+        Order="1"
+        Condition="WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 AND NOT Installed" />
+    </UI>
+
+    <CustomAction
+      Id="LaunchDesktopTieAfterInstall"
+      BinaryRef="Wix4UtilCA_$(sys.BUILDARCHSHORT)"
+      DllEntry="WixUnelevatedShellExec"
+      Execute="immediate"
+      Return="ignore" />
 
     <Feature Id="MainFeature" Title="DesktopTie" Level="1">
       <ComponentGroupRef Id="DesktopTieComponents" />
@@ -48,8 +66,6 @@
   <Fragment>
     <InstallExecuteSequence>
       <Custom Action="KillDesktopTiePrecheck" Before="InstallValidate" />
-      <Custom Action="SetWixUnelevatedShellExecTarget" After="InstallFinalize" Condition="WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1" />
-      <Custom Action="LaunchDesktopTieAfterInstall" After="SetWixUnelevatedShellExecTarget" Condition="WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1" />
     </InstallExecuteSequence>
   </Fragment>
 
@@ -97,21 +113,5 @@
         <RegistryValue Root="HKCU" Key="Software\DesktopTie" Name="Installed" Type="integer" Value="1" KeyPath="yes" />
       </Component>
     </ComponentGroup>
-  </Fragment>
-
-  <Fragment>
-    <SetProperty
-      Id="WixUnelevatedShellExecTarget"
-      Value="[INSTALLFOLDER]DesktopTie.exe"
-      Before="LaunchDesktopTieAfterInstall"
-      Sequence="execute" />
-
-    <CustomAction
-      Id="LaunchDesktopTieAfterInstall"
-      BinaryRef="Wix4UtilCA_$(sys.BUILDARCHSHORT)"
-      DllEntry="WixUnelevatedShellExec"
-      Execute="immediate"
-      Return="ignore" />
-
   </Fragment>
 </Wix>

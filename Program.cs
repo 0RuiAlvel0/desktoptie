@@ -3,9 +3,9 @@ using DesktopTie.Desktop;
 using DesktopTie.Services;
 using DesktopTie.Startup;
 using DesktopTie.Tray;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System.Windows.Forms;
+// using Microsoft.Extensions.DependencyInjection;
+// using Microsoft.Extensions.Hosting;
+// using System.Windows.Forms;
 
 namespace DesktopTie;
 
