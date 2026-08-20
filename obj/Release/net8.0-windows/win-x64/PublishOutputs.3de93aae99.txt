@@ -1,4 +1,0 @@
-C:\projects\DesktopTie\artifacts\publish\appsettings.Development.json
-C:\projects\DesktopTie\artifacts\publish\appsettings.json
-C:\projects\DesktopTie\artifacts\publish\DesktopTie.pdb
-C:\projects\DesktopTie\artifacts\publish\DesktopTie.exe

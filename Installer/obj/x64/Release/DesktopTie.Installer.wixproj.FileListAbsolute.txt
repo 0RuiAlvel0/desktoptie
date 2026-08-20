@@ -1,1 +1,0 @@
-C:\projects\DesktopTie\Installer\obj\x64\Release\DesktopTie.Installer.wixproj.CoreCompileInputs.cache
